@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Blog.Core.IRepository;
+using Blog.Core.IService;
+using Blog.Core.Repository;
 
 namespace Blog.Core.Services
 {
-    class AdvertisementServices
+    public class AdvertisementService : IAdvertisementServices
     {
+        IAdvertisementRepository dal = new AdvertisementRepository();
+
+        public int Sum(int i, int j)
+        {
+            return dal.Sum(i, j);
+        }
     }
 }
