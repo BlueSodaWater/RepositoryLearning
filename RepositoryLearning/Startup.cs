@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +26,7 @@ namespace RepositoryLearning
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var basePath = AppContext.BaseDirectory;
             services.AddControllers();
 
             #region Swagger
@@ -41,6 +43,9 @@ namespace RepositoryLearning
                         Email = "835059949@qq.com",
                     }
                 });
+
+                var xmlPath = Path.Combine(basePath, "Blog.Core.xml");//这个就是刚刚配置的xml文件名
+                c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
             });
             #endregion
         }
