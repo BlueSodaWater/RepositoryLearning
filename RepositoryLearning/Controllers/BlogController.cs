@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.IService;
+using Blog.Core.Model.Models;
 using Blog.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,25 +15,18 @@ namespace Blog.Core.Controllers
     [ApiController]
     public class BlogController : ControllerBase
     {
-        // GET: api/Blog
+        // GET: api/Blog/5
         /// <summary>
-        /// Sum接口
+        /// 
         /// </summary>
-        /// <param name="i">参数i</param>
-        /// <param name="j">参数j</param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
-        public int Get(int i, int j)
+        [HttpGet("{id}", Name = "Get")]
+        public List<Advertisement> Get(int id)
         {
             IAdvertisementServices advertisementServices = new AdvertisementService();
-            return advertisementServices.Sum(i, j);
-        }
 
-        // GET api/<BlogController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            return advertisementServices.Query(d => d.Id == id);
         }
 
         // POST api/<BlogController>

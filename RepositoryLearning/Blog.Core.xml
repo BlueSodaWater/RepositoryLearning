@@ -4,12 +4,11 @@
         <name>Blog.Core</name>
     </assembly>
     <members>
-        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32)">
+        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32)">
             <summary>
-            Sum接口
+            
             </summary>
-            <param name="i">参数i</param>
-            <param name="j">参数j</param>
+            <param name="id"></param>
             <returns></returns>
         </member>
     </members>
