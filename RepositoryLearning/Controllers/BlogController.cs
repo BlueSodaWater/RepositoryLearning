@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.IService;
 using Blog.Core.Model.Models;
-using Blog.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,6 +14,13 @@ namespace Blog.Core.Controllers
     [ApiController]
     public class BlogController : ControllerBase
     {
+        private readonly IAdvertisementServices advertisementServices;
+
+        public BlogController(IAdvertisementServices advertisementServices)
+        {
+            this.advertisementServices = advertisementServices;
+        }
+
         // GET: api/Blog/5
         /// <summary>
         /// 
@@ -24,8 +30,6 @@ namespace Blog.Core.Controllers
         [HttpGet("{id}", Name = "Get")]
         public async Task<List<Advertisement>> Get(int id)
         {
-            IAdvertisementServices advertisementServices = new AdvertisementService();
-
             return await advertisementServices.Query(d => d.Id == id);
         }
 

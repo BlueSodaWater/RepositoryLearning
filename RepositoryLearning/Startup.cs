@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extras.DynamicProxy;
+using Blog.Core.IService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -74,6 +78,22 @@ namespace RepositoryLearning
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+
+            var basePath = AppContext.BaseDirectory;
+
+            //注册要通过反射创建的组件
+            var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
+            var assemblysServices = Assembly.LoadFrom(servicesDllFile);
+
+            builder.RegisterAssemblyTypes(assemblysServices)
+                      .AsImplementedInterfaces()
+                      .InstancePerLifetimeScope()
+                      .EnableInterfaceInterceptors();
+
         }
     }
 }
