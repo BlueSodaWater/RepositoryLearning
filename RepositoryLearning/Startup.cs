@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
+using Blog.Core.AOP;
 using Blog.Core.IService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -85,6 +86,8 @@ namespace RepositoryLearning
 
             var basePath = AppContext.BaseDirectory;
 
+            builder.RegisterType<BlogLogAOP>();
+
             //注册要通过反射创建的组件
             var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
             var assemblysServices = Assembly.LoadFrom(servicesDllFile);
@@ -92,7 +95,8 @@ namespace RepositoryLearning
             builder.RegisterAssemblyTypes(assemblysServices)
                       .AsImplementedInterfaces()
                       .InstancePerLifetimeScope()
-                      .EnableInterfaceInterceptors();
+                      .EnableInterfaceInterceptors()
+                      .InterceptedBy(typeof(BlogLogAOP));
 
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Blog.Core.IRepository;
 using Blog.Core.IService;
+using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Blog.Core.Repository;
 using System;
@@ -10,7 +11,11 @@ namespace Blog.Core.Services
 {
     public class AdvertisementService : BaseServices<Advertisement>, IAdvertisementServices
     {
-        public IAdvertisementRepository dal = new AdvertisementRepository();
-        
+        public int Test()
+        {
+            return 1;
+        }
+
+        public List<AdvertisementEntity> TestAOP() => new List<AdvertisementEntity>() { new AdvertisementEntity() { id = 1, name = "laozhang" } };
     }
 }

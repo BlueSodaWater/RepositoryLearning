@@ -4,11 +4,16 @@
         <name>Blog.Core</name>
     </assembly>
     <members>
-        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32)">
+        <member name="M:Blog.Core.AOP.BlogLogAOP.Intercept(Castle.DynamicProxy.IInvocation)">
             <summary>
-            
+            实例化IInterceptor唯一方法 
             </summary>
-            <param name="id"></param>
+            <param name="invocation">包含被拦截方法的信息</param>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.TestAdsFromAOP">
+            <summary>
+            测试AOP
+            </summary>
             <returns></returns>
         </member>
     </members>

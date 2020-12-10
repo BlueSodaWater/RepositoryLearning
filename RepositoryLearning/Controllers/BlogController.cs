@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.IService;
+using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,16 +22,15 @@ namespace Blog.Core.Controllers
             this.advertisementServices = advertisementServices;
         }
 
-        // GET: api/Blog/5
+
         /// <summary>
-        /// 
+        /// 测试AOP
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}", Name = "Get")]
-        public async Task<List<Advertisement>> Get(int id)
+        [HttpGet]
+        public List<AdvertisementEntity> TestAdsFromAOP()
         {
-            return await advertisementServices.Query(d => d.Id == id);
+            return advertisementServices.TestAOP();
         }
 
         // POST api/<BlogController>
