@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Blog.Core.AOP;
+using Blog.Core.Helper;
 using Blog.Core.IService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,7 +34,8 @@ namespace RepositoryLearning
         {
             var basePath = AppContext.BaseDirectory;
             services.AddControllers();
-
+            services.AddMemoryCache();
+            services.AddScoped<ICaching, MemoryCaching>();
             #region Swagger
             services.AddSwaggerGen(c =>
             {
@@ -87,6 +89,7 @@ namespace RepositoryLearning
             var basePath = AppContext.BaseDirectory;
 
             builder.RegisterType<BlogLogAOP>();
+            builder.RegisterType<BlogCacheAOP>();
 
             //注册要通过反射创建的组件
             var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
@@ -96,7 +99,7 @@ namespace RepositoryLearning
                       .AsImplementedInterfaces()
                       .InstancePerLifetimeScope()
                       .EnableInterfaceInterceptors()
-                      .InterceptedBy(typeof(BlogLogAOP));
+                      .InterceptedBy(typeof(BlogLogAOP), typeof(BlogCacheAOP));
 
         }
     }
