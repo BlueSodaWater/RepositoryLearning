@@ -1,4 +1,5 @@
-﻿using Blog.Core.Helper;
+﻿using Blog.Core.Common;
+using Blog.Core.Helper;
 using Castle.DynamicProxy;
 using System;
 using System.Collections.Generic;
@@ -17,19 +18,26 @@ namespace Blog.Core.AOP
 
         public override void Intercept(IInvocation invocation)
         {
-            var cacheKey = CustomCacheKey(invocation);
+            var method = invocation.MethodInvocationTarget ?? invocation.Method;
+            var qCachingAttribute = method.GetCustomAttributes(true).FirstOrDefault(
+                x => x.GetType() == typeof(CachingAttribute)) as CachingAttribute;
 
-            var cacheValue = Cache.Get(cacheKey);
-            if (cacheValue != null)
+            if (qCachingAttribute != null)
             {
-                invocation.ReturnValue = cacheValue;
-                return;
-            }
+                var cacheKey = CustomCacheKey(invocation);
 
-            invocation.Proceed();
-            if (!string.IsNullOrWhiteSpace(cacheKey))
-            {
-                Cache.Set(cacheKey, invocation.ReturnValue);
+                var cacheValue = Cache.Get(cacheKey);
+                if (cacheValue != null)
+                {
+                    invocation.ReturnValue = cacheValue;
+                    return;
+                }
+
+                invocation.Proceed();
+                if (!string.IsNullOrWhiteSpace(cacheKey))
+                {
+                    Cache.Set(cacheKey, invocation.ReturnValue);
+                }
             }
         }
     }
